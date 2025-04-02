@@ -1,4 +1,8 @@
-<div align="center"><img src="https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png" alt="gcp logo" height="150px" /></div>
+<div align="center">
+  <img src="https://static-00.iconduck.com/assets.00/google-cloud-icon-2048x1646-7admxejz.png" alt="gcp logo" height="100px" />
+  
+  <img src="https://github.com/user-attachments/assets/49d78902-938b-47dd-901b-daeb1ec4efb0" alt="github actions logo" height="100px"/>
+</div>
 
 # Automação de Infraestrutura e CI/CD no Google Cloud com Terraform e GitHub Actions
 
@@ -6,10 +10,11 @@ Este tutorial explica como criar e automatizar a infraestrutura no Google Cloud 
 
 ## Índice
 - [Pré-requisitos](#pré-requisitos)
-- [Passo 1: Configuração da Rede VPC](#passo-1-configuração-da-rede-vpc)
-- [Passo 2: Criando uma Máquina Virtual (VM)](#passo-2-criando-uma-máquina-virtual-vm)
-- [Passo 3: Configuração de Firewall](#passo-3-configuração-de-firewall)
-- [Passo 4: Obtendo o IP Público da VM](#passo-4-obtendo-o-ip-público-da-vm)
+- [Passo 1: Organizando o Projeto Terraform](#passo-1-organizando-o-projeto-terraform)
+- [Passo 2: Configuração da Rede VPC](#passo-2-configuração-da-rede-vpc)
+- [Passo 3: Criando uma Máquina Virtual (VM)](#passo-3-criando-uma-máquina-virtual-vm)
+- [Passo 4: Configuração de Firewall](#passo-4-configuração-de-firewall)
+- [Passo 5: Obtendo o IP Público da VM](#passo-5-obtendo-o-ip-público-da-vm)
 - [Como Aplicar o Terraform](#como-aplicar-o-terraform)
 - [Conectando-se à VM](#conectando-se-à-vm)
 - [Configurando CI/CD com GitHub Actions](#configurando-cicd-com-github-actions)
@@ -24,7 +29,24 @@ Antes de começar, certifique-se de ter os seguintes requisitos atendidos:
 - Terraform instalado.
 - Acesso ao GitHub para configurar o CI/CD.
 
-## Passo 1: Configuração da Rede VPC
+## Passo 1: Organizando o Projeto Terraform
+
+Vamos começar criando uma estrutura de pastas para o seu projeto Terraform. Crie uma pasta no seu diretório local onde você armazenará todos os arquivos necessários para criar a infraestrutura.
+
+### Estrutura do Projeto
+```plaintext
+meu-projeto-terraform/
+├── main.tf
+├── variables.tf
+├── outputs.tf
+└── terraform.tfvars
+```
+- main.tf: Arquivo principal que contém os recursos que vamos criar, como a rede, VM e regras de firewall.
+- variables.tf: Onde declaramos variáveis, como o nome da VM, a região e a zona do GCP.
+- outputs.tf: Contém as saídas que queremos exibir após a execução do Terraform, como o IP público da VM.
+- terraform.tfvars: Arquivo onde você pode definir os valores das variáveis, como a chave SSH, a região, etc.
+
+## Passo 2: Configuração da Rede VPC
 A VPC (Virtual Private Cloud) permite a comunicação entre recursos na nuvem de forma isolada e segura.
 ```hcl
 resource "google_compute_network" "vpc_network" {
@@ -36,7 +58,7 @@ resource "google_compute_network" "vpc_network" {
 - Criamos uma VPC chamada `my-vpc-network`.
 - Permitimos a criação automática de sub-redes.
 
-## Passo 2: Criando uma Máquina Virtual (VM)
+## Passo 3: Criando uma Máquina Virtual (VM)
 A VM será criada na região `us-west1-a` com o tipo de máquina mais econômico (`f1-micro`).
 ```hcl
 resource "google_compute_instance" "default" {
@@ -71,7 +93,7 @@ resource "google_compute_instance" "default" {
 - Adicionamos um script de inicialização para instalar pacotes básicos.
 - Associamos a VM à VPC criada e fornecemos um IP público.
 
-## Passo 3: Configuração de Firewall
+## Passo 4: Configuração de Firewall
 Para permitir o acesso SSH e a execução de uma aplicação Java, criamos duas regras de firewall.
 
 ### Regra para permitir SSH:
@@ -107,7 +129,7 @@ resource "google_compute_firewall" "java" {
 - A regra `allow-ssh` permite conexões SSH de qualquer IP.
 - A regra `java-app-firewall` permite tráfego TCP na porta 8080.
 
-## Passo 4: Obtendo o IP Público da VM
+## Passo 5: Obtendo o IP Público da VM
 Ao aplicar o Terraform, você verá o IP público da VM na saída.
 ```hcl
 output "instance_ip" {
