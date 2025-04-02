@@ -4,6 +4,19 @@
 
 Este tutorial explica como criar e automatizar a infraestrutura no Google Cloud usando Terraform. Além disso, implementamos um pipeline de CI/CD com GitHub Actions para implantar aplicações automaticamente em uma VM.
 
+## Índice
+- [Pré-requisitos](#pré-requisitos)
+- [Passo 1: Configuração da Rede VPC](#passo-1-configuração-da-rede-vpc)
+- [Passo 2: Criando uma Máquina Virtual (VM)](#passo-2-criando-uma-máquina-virtual-vm)
+- [Passo 3: Configuração de Firewall](#passo-3-configuração-de-firewall)
+- [Passo 4: Obtendo o IP Público da VM](#passo-4-obtendo-o-ip-público-da-vm)
+- [Como Aplicar o Terraform](#como-aplicar-o-terraform)
+- [Conectando-se à VM](#conectando-se-à-vm)
+- [Configurando CI/CD com GitHub Actions](#configurando-cicd-com-github-actions)
+- [Criando um Workflow no GitHub Actions](#criando-um-workflow-no-github-actions)
+- [Criando os Segredos no GitHub](#criando-os-segredos-no-github)
+- [Como Funciona?](#como-funciona)
+
 ## Pré-requisitos
 Antes de começar, certifique-se de ter os seguintes requisitos atendidos:
 - Conta no Google Cloud Platform (GCP) com faturamento ativado.
@@ -125,7 +138,7 @@ ssh usuario@IP_DA_VM
 ## Configurando CI/CD com GitHub Actions
 Agora, vamos configurar um **workflow no GitHub Actions** para automatizar o deploy na VM.
 
-### Criando um Workflow no GitHub Actions
+## Criando um Workflow no GitHub Actions
 Crie um arquivo chamado `.github/workflows/deploy.yml` no seu repositório com o seguinte conteúdo:
 
 ```yaml
@@ -156,13 +169,13 @@ jobs:
             sudo systemctl restart minha-app
 ```
 
-### Criando os Segredos no GitHub
+## Criando os Segredos no GitHub
 Para que o workflow funcione, você precisa adicionar os seguintes **segredos** no GitHub:
 1. **VM_IP** → O IP público da sua VM.
 2. **VM_USER** → O usuário de SSH da sua VM (exemplo: `ubuntu` ou `gcp-user`).
 3. **SSH_PRIVATE_KEY** → A chave privada SSH usada para conectar à VM.
 
-### Como Funciona?
+## Como Funciona?
 - Quando você faz **push** na branch `main`, o GitHub Actions conecta à VM.
 - Ele faz um **git pull** para atualizar o código.
 - Ele reinicia o serviço da aplicação automaticamente.
