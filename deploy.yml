@@ -1,0 +1,25 @@
+name: Deploy para VM no GCP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar o repositório
+        uses: actions/checkout@v3
+
+      - name: Conectar à VM e implantar
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /caminho/do/projeto
+            git pull origin main
+            sudo systemctl restart minha-app
