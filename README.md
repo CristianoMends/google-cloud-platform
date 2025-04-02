@@ -1,6 +1,8 @@
-# Google Cloud Deploy - Infraestrutura com Terraform
+<div align="center"><img src="https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png" alt="gcp logo" height="150px" /></div>
 
-Este tutorial explica como criar uma infraestrutura básica no Google Cloud usando Terraform. O processo inclui a criação de uma VPC, uma máquina virtual (VM) e regras de firewall para permitir conexões SSH e execução de uma aplicação Java.
+# Automação de Infraestrutura e CI/CD no Google Cloud com Terraform e GitHub Actions
+
+Este tutorial explica como criar e automatizar a infraestrutura no Google Cloud usando Terraform. Além disso, implementamos um pipeline de CI/CD com GitHub Actions para implantar aplicações automaticamente em uma VM.
 
 ## Pré-requisitos
 Antes de começar, certifique-se de ter os seguintes requisitos atendidos:
