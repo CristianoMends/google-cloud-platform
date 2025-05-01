@@ -1,3 +1,9 @@
+provider "google" {
+  project = "<project-ID>"
+  region  = "us-central1"
+  zone    = "us-central1-c"
+}
+
 resource "google_compute_network" "vpc_network" {
   name                    = "my-vpc-network"
   auto_create_subnetworks = true
